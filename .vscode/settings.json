@@ -1,0 +1,5 @@
+{
+    "dotnet.defaultSolution": "17_06_2023_task/17_06_2023_task.sln",
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.enableEditorConfigSupport": true
+}
