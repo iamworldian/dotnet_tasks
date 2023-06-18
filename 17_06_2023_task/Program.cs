@@ -53,15 +53,16 @@ namespace taskSql {
 
         public void saveTODB() {
 
-            string _connStr = @"
-                Server=127.0.0.1,1433;
-                Database=TestDB;
-                User Id=sa;
-                Password=Ashik111340_";
+            string _connStr = @"Server=localhost:1433;Database=TestDB;User Id=sa;Password=Ashik111340_;TrustServerCertificate=True";
+;
 
 
            using (SqlConnection connection = new SqlConnection(_connStr))
            {
+
+                connection.Open();
+                Console.WriteLine("ServerVersion: {0}", connection.ServerVersion);
+                Console.WriteLine("State: {0}", connection.State);
                 SqlCommand command = new SqlCommand("insert into persons(name,email,contact) values(@name,@email,@contact)", connection);
            
                 command.Parameters.AddWithValue("@name", this.name);

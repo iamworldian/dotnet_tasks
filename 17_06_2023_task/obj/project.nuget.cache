@@ -1,8 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "Y85HAX+0Jxe91nSSOahd27FrbcSo68cRsvdTtXOCPmrTlwxsPlHnFtzFt+Q7/aj8BxD9qzZQ84MlM67UZrOWqg==",
+  "dgSpecHash": "E/A+3vIIqS5nad6i0slJXjjFUDrpHWl8+PI4VpZfv5VcMbDwCSJ9q/TwU/5PcMS5kaVxxCY6MGU4LdbkjxHlQQ==",
   "success": true,
-  "projectFilePath": "/home/worldian/Desktop/dotnet_tasks/17_06_2023_task/17_06_2023_task.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/worldian/Desktop/test/test.csproj",
+  "expectedPackageFiles": [
+    "/home/worldian/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/runtime.native.system.data.sqlclient.sni/4.7.0/runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/runtime.win-x64.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0/runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/system.data.sqlclient/4.8.5/system.data.sqlclient.4.8.5.nupkg.sha512",
+    "/home/worldian/.nuget/packages/system.security.accesscontrol/4.7.0/system.security.accesscontrol.4.7.0.nupkg.sha512",
+    "/home/worldian/.nuget/packages/system.security.principal.windows/4.7.0/system.security.principal.windows.4.7.0.nupkg.sha512"
+  ],
   "logs": []
 }
