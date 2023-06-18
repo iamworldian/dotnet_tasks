@@ -73,8 +73,8 @@ namespace taskSql {
                 {
                     while (reader.Read())
                     {
-                        Console.WriteLine(String.Format("{0}, {1}",
-                        reader["tPatCulIntPatIDPk"], reader["tPatSFirstname"]));// etc
+                        Console.WriteLine(String.Format("{0}, {1}, {2}",
+                        reader["name"], reader["email"], reader["contact"]));// etc
                     }
                 }
                 finally
