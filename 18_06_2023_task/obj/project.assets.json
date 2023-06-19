@@ -475,11 +475,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/worldian/Desktop/dotnet_tasks/17_06_2023_task/test.csproj",
+      "projectUniqueName": "/home/worldian/Desktop/test/test.csproj",
       "projectName": "test",
-      "projectPath": "/home/worldian/Desktop/dotnet_tasks/17_06_2023_task/test.csproj",
+      "projectPath": "/home/worldian/Desktop/test/test.csproj",
       "packagesPath": "/home/worldian/.nuget/packages/",
-      "outputPath": "/home/worldian/Desktop/dotnet_tasks/17_06_2023_task/obj/",
+      "outputPath": "/home/worldian/Desktop/test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/worldian/.nuget/NuGet/NuGet.Config"

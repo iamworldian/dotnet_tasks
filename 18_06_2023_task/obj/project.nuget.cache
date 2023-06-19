@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NcSfLQsIr6wkma1gI8UfPyIsFX0Y54GOCg2hjGu6tgNtBG33piywYNhyV8SEt21HcxGTRchzI/hQI5xcHtGUiw==",
+  "dgSpecHash": "E/A+3vIIqS5nad6i0slJXjjFUDrpHWl8+PI4VpZfv5VcMbDwCSJ9q/TwU/5PcMS5kaVxxCY6MGU4LdbkjxHlQQ==",
   "success": true,
-  "projectFilePath": "/home/worldian/Desktop/dotnet_tasks/17_06_2023_task/test.csproj",
+  "projectFilePath": "/home/worldian/Desktop/test/test.csproj",
   "expectedPackageFiles": [
     "/home/worldian/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "/home/worldian/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
