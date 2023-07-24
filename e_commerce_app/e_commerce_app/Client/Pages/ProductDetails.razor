@@ -1,0 +1,127 @@
+
+@page "/product/{Id:int}"
+
+@inject ICartService CartService
+@inject IProductService ProductService
+
+<div class="">
+    
+    @if (!Success)
+    { 
+        <h2 class="alert-danger">@Message</h2>
+    }
+    
+    
+    
+    @if (CurrentProduct == null)
+    {
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    }
+    else
+    {
+        <div class="details">
+            <img class="productImage" src="@CurrentProduct.ImageUrl" alt="@CurrentProduct.Title"/>
+            <div>
+                <h2 class="">@CurrentProduct.Title</h2>
+                <p> @CurrentProduct.Description</p>
+                <p><span class="badge bg-success">@CurrentProduct.Category.Name</span></p>
+            </div>
+        </div>
+        @* <span class="price">@CurrentProduct.Price</span> *@
+        
+        // DropDown for variants
+        @if (CurrentProduct.ProductVariants != null)
+        {
+            <div class="m-3">
+                <select class="form-control" @bind="SelectedVariantId">
+                    @foreach (var variants in CurrentProduct.ProductVariants)
+                    {
+                        <option value="@variants.ProductTypeId">@variants.ProductType.Name</option>
+                    }
+                </select>
+            </div>
+        }
+        
+        // Price Show Area
+        @if (GetSelectedVariant() != null)
+        {
+            @if (GetSelectedVariant().OriginalPrice > GetSelectedVariant().Price)
+            {
+                <h6 class="text-muted text-decoration-line-through">$@GetSelectedVariant().OriginalPrice</h6>
+            }
+            <h4 class="price">
+                @GetSelectedVariant().Price
+            </h4>
+        }
+        <button class="btn btn-primary" @onclick="AddToCart">
+            <i class="oi oi-cart"></i>&nbsp;&nbsp;Add to Cart
+        </button>
+    }
+    
+</div>
+
+@code {
+    private Product? CurrentProduct { get; set; }
+    private string Message { get; set; } = string.Empty;
+    private bool Success { get; set; } = true;
+
+    private int SelectedVariantId { get; set; }
+
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await ProductService.GetProduct(Id);
+
+        if (result.Success == false)
+        {
+            Message = result.Message;
+            Success = result.Success;
+        }
+        else
+        {
+            CurrentProduct = result.Data;
+
+            if (CurrentProduct.ProductVariants.Count > 0)
+            {
+                SelectedVariantId = CurrentProduct.ProductVariants[0].ProductTypeId;
+            }
+        }
+    }
+
+    private ProductVariant GetSelectedVariant()
+    {
+        var variant = CurrentProduct.ProductVariants.FirstOrDefault(p => p.ProductTypeId == SelectedVariantId);
+        return variant;
+    }
+
+    private async Task AddToCart()
+    {
+        Console.WriteLine(CurrentProduct.ProductVariants.Count);
+        int existInCartAlready = CartService.ProductsInCart.FindIndex(p => p.Product.Id == CurrentProduct.Id && p.Product.ProductVariants.FindIndex(q => q.ProductTypeId == SelectedVariantId) != -1);
+        if (existInCartAlready != -1)
+        {
+            CartService.ProductsInCart[existInCartAlready].Quantity += 1;
+        }
+        else
+        {
+            var cartItem = new CartItem()
+            {
+                Product = CurrentProduct.Clone(),
+                Quantity = 1,
+                ProductTypeId = GetSelectedVariant().ProductTypeId
+            };
+
+            cartItem.Product.ProductVariants = new List<ProductVariant>()
+            {
+                GetSelectedVariant()
+            };
+            await CartService.AddToCart(cartItem);
+        }
+        Console.WriteLine(CurrentProduct.ProductVariants.Count);
+    }
+
+}

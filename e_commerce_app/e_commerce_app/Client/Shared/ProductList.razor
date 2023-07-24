@@ -1,0 +1,52 @@
+
+@inject IProductService ProductService
+
+@if (ProductService.Products == null || ProductService.Products.Count == 0)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+<ul class="container_x">
+   @foreach (var product in ProductService.Products)
+   {
+       <li class="item"><div class="image">
+               <a href="product/@product.Id">
+                   <img src="@product.ImageUrl" alt="@product.Title" class="imageSize"/>
+               </a>
+           </div>
+           <div class="title">
+               <a href="product/@product.Id">
+                   <h2>@product.Title</h2>
+               </a>
+               <p>@product.Description</p>
+               <p><span class="badge bg-primary">@product.Category.Name</span></p>
+               <h5>@GetStartingFromPriceText(product)</h5>
+           </div>
+       </li>
+   }
+</ul>
+@code {
+
+  
+    protected override void OnInitialized()
+    {
+        ProductService.ProductsChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ProductService.ProductsChanged -= StateHasChanged;
+    }
+
+    public string GetStartingFromPriceText(Product product)
+    {
+        if (product.ProductVariants.Count == 0) return $"This product is not available";
+        else
+        {
+            var minPrice = product.ProductVariants.Min(p => p.Price);
+            return $"Starting from $ {minPrice}";
+        }
+    }
+
+}

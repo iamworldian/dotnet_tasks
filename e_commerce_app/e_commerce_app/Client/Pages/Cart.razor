@@ -1,0 +1,109 @@
+@page "/cart"
+@inject ICartService CartService
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Shopping Cart</PageTitle>
+
+<h3>Shopping Cart</h3>
+
+@if (cartProducts == null || cartProducts.Count == 0)
+{
+    <span>@message</span>
+}
+else
+{
+    <div>
+        @foreach (var product in cartProducts)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@product.Product.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/product/@product.Product.Id">@product.Product.Title</a></h5>
+                    <h3><span class="badge bg-primary">@product.Product.ProductVariants[0].ProductType.Name Variant</span></h3>
+                   
+                    <input type="number" value="@product.Quantity"
+                   @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, product.Product.Id,product.ProductTypeId))"
+                   class="form-control input-quantity"
+                   min="1" />
+                    <button class="btn btn-delete" @onclick="@(() =>
+                        RemoveProductFromCart( product.Product.Id , product.ProductTypeId))">
+                        Delete
+                    </button>
+                </div>
+                <div class="cart-product-price">$@(product.Product.ProductVariants[0].Price * product.Quantity)</div>
+            </div>
+        }
+        <div class="cart-product-price">
+            Total : @GetTotalCost()
+        </div>
+    </div>
+    @* @if (isAuthenticated) *@
+    @* { *@
+    @*     <div> *@
+    @*         <h5>Delivery Address</h5> *@
+    @*         <AddressForm /> *@
+    @*     </div> *@
+    @* } *@
+    <button class="btn alert-success float-end mt-1">Checkout</button>
+}
+
+
+
+@code {
+    List<CartItem> cartProducts = null;
+    string message = "Loading cart...";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCart();
+    }
+
+   
+    private async Task LoadCart()
+    {
+
+        cartProducts = CartService.ProductsInCart;
+        if (cartProducts == null || cartProducts.Count == 0)
+        {
+            message = "Your cart is empty.";
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        CartService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged; 
+    }
+     
+    private async Task UpdateQuantity(ChangeEventArgs e, int productId , int productTypeId)
+    {
+        var index = cartProducts.FindIndex(p => p.Product.Id == productId && p.ProductTypeId == productTypeId);
+        cartProducts[index].Quantity = int.Parse(e.Value.ToString());
+    }
+    
+    private async Task RemoveProductFromCart(int productId , int productTypeId)
+    {
+        var itemToRemove = cartProducts.Single(r => r.Product.Id == productId && r.ProductTypeId == productTypeId);
+        cartProducts.Remove(itemToRemove);
+        await CartService.RemovedFromCart();
+    }
+
+    private decimal GetTotalCost()
+    {
+        decimal total = 0.0M;
+        foreach (var cartItem in cartProducts)
+        {
+            total += (cartItem.Product.ProductVariants[0].Price * cartItem.Quantity);
+        }
+
+        return total;
+    }
+}

@@ -1,0 +1,43 @@
+@page "/login"
+@using e_commerce_app.Client.Services.AuthService
+@inject IAuthService AuthService
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+<EditForm Model="userlogin" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="userlogin.Email" class="form-control" />
+        <ValidationMessage For="@(() => userlogin.Email)" />
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="userlogin.Password" class="form-control" type="password" />
+        <ValidationMessage For="@(() => userlogin.Password)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+    <div class="text-danger bg-info m-3 p-3 border-3">
+        <span>@message</span>
+    </div>
+</EditForm>
+
+@code {
+    private UserLogin userlogin = new UserLogin();
+    private string message = string.Empty;
+    private async Task HandleLogin()
+    {
+        var result = await AuthService.Login(userlogin);
+        message = result.Message;
+        if (result.Success)
+        {
+            await LocalStorageService.SetItemAsync("authToke", result.Data);
+            await Task.Delay(1000);
+            NavigationManager.NavigateTo("");
+        }
+    }
+
+}

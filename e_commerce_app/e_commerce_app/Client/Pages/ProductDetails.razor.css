@@ -1,0 +1,25 @@
+.details{
+    display: flex;
+    gap: 10px;
+}
+
+.title {
+    font-size: xx-large;
+    background-color: lightgrey;
+    padding: 0.5em;
+}
+.description{
+    font-size: x-large;
+}
+
+.price{
+    font-size: xxx-large;
+    color: teal;
+}
+.price::before{
+    content: '$ ';
+}
+
+.productImage {
+    width: 350px;
+}
