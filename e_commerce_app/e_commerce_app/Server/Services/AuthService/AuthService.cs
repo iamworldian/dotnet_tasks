@@ -74,6 +74,29 @@ public class AuthService:IAuthService
         return response;
     }
 
+    public async Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword)
+    {
+        var user = await _dataContext.Users.FindAsync(userId);
+        if (user == null)
+        {
+            return new ServiceResponse<bool>()
+            {
+                Success = false,
+                Message = "User not found"
+            };
+        }
+        
+        CreateHashPassword(newPassword, out byte[] passwrodHash, out byte[] paswordSalt);
+        user.Password = passwrodHash;
+        user.PasswordSalt = paswordSalt;
+        await _dataContext.SaveChangesAsync();
+        return new ServiceResponse<bool>()
+        {
+            Data = true,
+            Message = "Password has been changed"
+        };
+    }
+
     private void CreateHashPassword(string password, out byte[] passwrodHash, out byte[] paswordSalt)
     {
         using (var mac = new HMACSHA512())

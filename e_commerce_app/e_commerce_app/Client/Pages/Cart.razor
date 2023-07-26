@@ -1,11 +1,12 @@
 @page "/cart"
+@using e_commerce_app.Client.Services.AuthService
+@inject IAuthService AuthService
 @inject ICartService CartService
-
 @inject NavigationManager NavigationManager
 
 <PageTitle>Shopping Cart</PageTitle>
 
-<h3>Shopping Cart</h3>
+<h3>Shopping Cart </h3>
 
 @if (cartProducts == null || cartProducts.Count == 0)
 {
@@ -47,9 +48,11 @@ else
     @*         <AddressForm /> *@
     @*     </div> *@
     @* } *@
-    <button class="btn alert-success float-end mt-1">Checkout</button>
+    <button class="btn alert-success float-end mt-1" @onclick="PlaceOrder">Place Order</button>
 }
-
+<div class="text-danger bg-info m-3 p-3 border-3">
+    <span>@message</span>
+</div>
 
 
 @code {
@@ -106,4 +109,39 @@ else
 
         return total;
     }
+
+    private async Task PlaceOrder()
+    {
+
+        if (await AuthService.IsUserAuthenticated())
+        {
+            List<OrderItem> orderItems = new List<OrderItem>();
+            foreach (var item in cartProducts)
+            {
+                var orderItem = new OrderItem()
+                {
+                    ProductId = item.Product.Id,
+                    ProductTypeId = item.ProductTypeId,
+                    Quantity = item.Quantity,
+                    TotalPrice = (item.Product.ProductVariants[0].Price * item.Quantity)
+                };
+                orderItems.Add(orderItem);
+            }
+
+            Order order = new Order()
+            {
+                TotalPrice = GetTotalCost(),
+                OrderItems = orderItems
+            };
+            var response = await CartService.PlaceOrder(order);
+            message = response.Message;
+            cartProducts = new List<CartItem>();
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"login?returnUrl={NavigationManager.ToBaseRelativePath(NavigationManager.Uri)}");
+        }
+
+    }
+
 }

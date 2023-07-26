@@ -18,8 +18,8 @@ public class ProductService: IProductService
 
     public async Task GetProducts(int? categoryId = null)
     {
-        var result = categoryId == null ? await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product"):
-            await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/category/{categoryId}");
+        var result = categoryId == null ? await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product/"):
+            await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/category/{categoryId}/");
         if (result != null && result.Data != null)
             Products = result.Data;
         ProductsChanged.Invoke();
@@ -27,13 +27,13 @@ public class ProductService: IProductService
 
     public async Task<ServiceResponse<Product>> GetProduct(int productId)
     {
-        var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}");
+        var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}/");
         return result;
     }
 
     public async Task SearchProducts(string searchText)
     {
-        var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/Product/search/{searchText}");
+        var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/search/{searchText}/");
 
         if (result != null && result.Data != null)
         {

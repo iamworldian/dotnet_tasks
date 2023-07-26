@@ -6,4 +6,6 @@ public interface IAuthService
 {
     Task<ServiceResponse<int>> Register(UserRegistry userRegistry);
     Task<ServiceResponse<string>> Login(UserLogin userLogin);
+    Task<ServiceResponse<bool>> ChangePassword(UserChangePassword userChangePassword);
+    Task<bool> IsUserAuthenticated();
 }

@@ -35,7 +35,7 @@
     string message = string.Empty;
     string messageCssClass = string.Empty;
 
-    async Task HandleRegistration()
+    private async Task HandleRegistration()
     {
         var result = await AuthService.Register(user);
         message = result.Message;

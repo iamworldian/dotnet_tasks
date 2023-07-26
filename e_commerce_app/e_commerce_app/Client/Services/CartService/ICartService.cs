@@ -8,4 +8,5 @@ public interface ICartService
     event Action OnChange;
     Task AddToCart(CartItem cartItem);
     Task RemovedFromCart();
+    public Task<ServiceResponse<bool>> PlaceOrder(Order order);
 }

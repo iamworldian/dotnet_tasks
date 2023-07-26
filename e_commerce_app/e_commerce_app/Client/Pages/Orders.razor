@@ -1,0 +1,63 @@
+@page "/orders"
+@using e_commerce_app.Client.Services.OrderService
+
+@inject IOrderService OrderService
+@attribute [Authorize]
+
+@if (OrderList == null || OrderList.Count == 0)
+{
+    <h2>You don't have any order history</h2>
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else
+{
+    <div class="container-lg">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th> OrderId & Placed Date</th>
+                      <th> Total Price </th>
+                    <th> Item Title </th>
+                    <th> Item Variant </th>
+                    <th> Image Url </th>
+                    <th> Quantity </th>
+                     <th> Item Price </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+             
+               @foreach (var order in OrderList)
+               {
+                       int c = order.OrderItems.Count + 1;
+                   <td rowspan="@c" style="width:10%"> ID: @order.id and Placed date : @order.OrderDate </td>
+                   <td rowspan="@c" style="font-size:1.5em"> <span class="badge bg-danger"> $ @order.TotalPrice </span></td>
+                   @foreach (var orderItems in order.OrderItems)
+                        {
+                            <tr>
+                                <td style="width:20%;font-size: 2em"> <span class="badge bg-success">@orderItems.Product.Title</span> </td>
+                                <td> <span class="badge bg-info" style="font-size: 1em;color: black">@orderItems.ProductType.Name</span> </td>
+                                <td> <img src="@orderItems.Product.ImageUrl" width="100"/> </td>
+                                <td> @orderItems.Quantity </td>
+                                <td> @orderItems.TotalPrice </td>
+                                
+                             </tr>
+                        }
+                    
+               }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<Order> OrderList = new List<Order>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        OrderList = await OrderService.GetOrders();
+        Console.WriteLine(OrderList.Count);
+    }
+}

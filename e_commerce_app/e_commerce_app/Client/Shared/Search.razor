@@ -2,13 +2,13 @@
 
 
 
-<div class="input-group">
+<div class="cont m-3">
     <input @bind-value="SearchText" 
            @ref="SearchInputRef" 
            @bind-value:event="oninput" 
            type="search" 
            list="products"
-           class="form-control"
+           class="form-control col-sm-2"
            placeholder="Search Products . . ."
            @onkeyup="SearchProducts"
            />
